@@ -1,6 +1,9 @@
 package start.todo.model.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +24,9 @@ public class Group {
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
+    @OneToMany(mappedBy = "group")
+    private List<Task> groups = new LinkedList<>();
+
     public Group() {}
 
     public Group(String title, String description, Category category, Project project) {
@@ -28,6 +34,18 @@ public class Group {
         this.description = description;
         this.category = category;
         this.project = project;
+    }
+
+    public Group titleAndDescription(String title, String description) {
+        this.title = title;
+        this.description = description;
+        return this;
+    }
+
+    public Group path(Project project, Category category) {
+        this.project = project;
+        this.category = category;
+        return this;
     }
 
     public Long getId() {
@@ -68,6 +86,14 @@ public class Group {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public List<Task> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Task> groups) {
+        this.groups = groups;
     }
 
     @Override
