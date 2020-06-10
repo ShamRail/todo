@@ -1,12 +1,11 @@
 package start.todo.model.domain;
 
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Category {
+@Table(name = "_group")
+public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,16 +16,17 @@ public class Category {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
-    @OneToMany(mappedBy = "category")
-    private List<Group> groups = new LinkedList<>();
+    public Group() {}
 
-    public Category() {}
-
-    public Category(String title, String description, Project project) {
+    public Group(String title, String description, Category category, Project project) {
         this.title = title;
         this.description = description;
+        this.category = category;
         this.project = project;
     }
 
@@ -54,6 +54,14 @@ public class Category {
         this.description = description;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public Project getProject() {
         return project;
     }
@@ -62,21 +70,13 @@ public class Category {
         this.project = project;
     }
 
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return Objects.equals(id, category.id) &&
-                Objects.equals(title, category.title);
+        Group group = (Group) o;
+        return Objects.equals(id, group.id) &&
+                Objects.equals(title, group.title);
     }
 
     @Override

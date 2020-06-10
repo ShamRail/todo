@@ -6,20 +6,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import start.todo.model.domain.Category;
+import start.todo.model.domain.Group;
 import start.todo.model.domain.Project;
 import java.util.List;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface GroupRepository extends JpaRepository<Group, Long> {
 
     @Modifying(clearAutomatically = true)
-    @Query("update Category c set c.title = :#{#category.title}, c.description = :#{#category.description}")
-    int update(@Param("category") Category category);
+    @Query("update Group g set g.title = :#{#group.title}, g.description = :#{#group.description}")
+    int update(@Param("group") Group group);
 
     @Modifying(clearAutomatically = true)
-    @Query("delete from Category c where c.id = :id")
+    @Query("delete from Group g where g.id = :id")
     int delete(@Param("id") Long id);
 
-    List<Category> findByProject(Project project);
+    List<Group> findByProject(Project project);
+
+    List<Group> findByCategory(Category category);
+
 
 }
