@@ -7,10 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import start.todo.model.domain.Category;
-import start.todo.model.domain.Group;
-import start.todo.model.domain.Project;
-import start.todo.model.domain.Task;
+import start.todo.model.domain.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -132,6 +129,19 @@ public class TaskRepositoryTest {
         Assert.assertThat(tasks.get(0).getTitle(), Is.is(task1.getTitle()));
         Assert.assertThat(tasks.get(1).getTitle(), Is.is(task2.getTitle()));
         Assert.assertThat(tasks.get(2).getTitle(), Is.is(task3.getTitle()));
+    }
+
+
+    @Test
+    public void whenSaveLoadWithContent() {
+        Task task = new Task().content(
+                new TaskContent("content")
+        );
+        taskDB.save(task);
+        Assert.assertThat(
+                taskDB.taskWithContent(task.getId()).getContent().getText(),
+                Is.is("content")
+        );
     }
 
 }

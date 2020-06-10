@@ -20,7 +20,7 @@ public class Task {
     @Enumerated(value = EnumType.STRING)
     private TaskStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private TaskContent content;
 
     @ManyToOne(fetch = FetchType.LAZY)

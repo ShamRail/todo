@@ -22,6 +22,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("delete from Task t where t.id = :id")
     int delete(@Param("id") Long id);
 
+    @Query("select t from Task t join fetch t.content where t.id = :id")
+    Task taskWithContent(@Param("id") Long id);
+
     List<Task> findByProject(Project project);
 
     List<Task> findByCategory(Category category);
