@@ -1,5 +1,6 @@
 package start.todo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import start.todo.model.view.ModelView;
@@ -30,6 +31,7 @@ public class User {
     private String password;
 
     @JsonView(ModelView.BasicFields.class)
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime registrationDate;
 
     @OneToMany(mappedBy = "user")
