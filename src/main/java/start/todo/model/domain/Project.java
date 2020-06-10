@@ -1,5 +1,10 @@
 package start.todo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import start.todo.model.view.ModelView;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -11,18 +16,25 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(ModelView.BasicFields.class)
     private Long id;
 
+    @JsonView(ModelView.BasicFields.class)
     private String title;
 
+    @JsonView(ModelView.BasicFields.class)
     private String description;
 
+    @JsonView(ModelView.BasicFields.class)
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime createDate;
 
     @OneToMany(mappedBy = "project")
+    @JsonIgnore
     private List<UserProject> users = new LinkedList<>();
 
     @OneToMany(mappedBy = "project")
+    @JsonView(ModelView.FieldsCategories.class)
     private List<Category> categories = new LinkedList<>();
 
     public Project() {}
@@ -30,6 +42,12 @@ public class Project {
     public Project(String title, String description) {
         this.title = title;
         this.description = description;
+    }
+
+    public Project(String title, String description, LocalDateTime createDate) {
+        this.title = title;
+        this.description = description;
+        this.createDate = createDate;
     }
 
     public Long getId() {

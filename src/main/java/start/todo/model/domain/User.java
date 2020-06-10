@@ -44,6 +44,10 @@ public class User {
         this.password = password;
     }
 
+    public static User idStub(Long id) {
+        return new User(id);
+    }
+
     public User(Long id) {
         this.id = id;
     }

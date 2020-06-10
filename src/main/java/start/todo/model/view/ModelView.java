@@ -3,13 +3,9 @@ package start.todo.model.view;
 public class ModelView {
 
     public static class BasicFields {}
-    public static class Children {}
-    public static class Participants {}
 
     // Views for Project
-    public static class UserOwner extends BasicFields {}
-    public static class ProjectOwner extends UserOwner {}
-    public static class ProjectOwnerCategories extends ProjectOwner {}
+    public static class FieldsCategories extends BasicFields {}
 
     // Views for Category
     public static class CategoryProject extends BasicFields {}
