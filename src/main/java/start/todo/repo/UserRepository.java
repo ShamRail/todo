@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("delete from User u where u.id = :id")
     int delete(@Param("id") Long id);
 
+    User findByEmail(String email);
+
 }
