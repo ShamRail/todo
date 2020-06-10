@@ -10,6 +10,9 @@ public interface ProjectService extends BasicCRUD<Project> {
     List<Project> userProjects(User user);
     List<User> participants(Project project);
 
+    boolean createProject(User user, Project project);
+    boolean dropProject(User user, Project project);
+
     boolean addParticipant(Project project, User user);
     boolean dropParticipant(Project project, User user);
 

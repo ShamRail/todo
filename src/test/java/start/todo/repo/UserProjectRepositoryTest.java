@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import start.todo.model.domain.Project;
+import start.todo.model.domain.Role;
 import start.todo.model.domain.User;
 import start.todo.model.domain.UserProject;
 import java.util.List;
@@ -57,6 +58,30 @@ public class UserProjectRepositoryTest {
         List<User> users = userProjectDB.projectUsers(project);
         Assert.assertThat(users.get(0).getUsername(), Is.is(user1.getUsername()));
         Assert.assertThat(users.get(1).getUsername(), Is.is(user2.getUsername()));
+    }
+
+    @Test
+    public void whenDeleteByProjectAndUser() {
+        User user = new User();
+        Project project = new Project();
+        userDB.save(user);
+        projectDB.save(project);
+        UserProject up = new UserProject(user, project);
+        userProjectDB.save(up);
+        userProjectDB.deleteByUserAndProject(user, project);
+        Assert.assertThat(userProjectDB.findAll().size(), Is.is(0));
+    }
+
+    @Test
+    public void whenFindByUserAndProject() {
+        User user = new User();
+        Project project = new Project();
+        userDB.save(user);
+        projectDB.save(project);
+        UserProject up = new UserProject(user, project);
+        up.setRole(Role.PARTICIPANT);
+        userProjectDB.save(up);
+        Assert.assertThat(userProjectDB.findByUserAndProject(user, project).getRole(), Is.is(up.getRole()));
     }
 
 }

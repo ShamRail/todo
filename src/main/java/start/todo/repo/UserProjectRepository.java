@@ -13,9 +13,9 @@ import java.util.List;
 @Repository
 public interface UserProjectRepository extends JpaRepository<UserProject, Long> {
 
-    int deleteByUser(User user);
+    int deleteByUserAndProject(User user, Project project);
 
-    int deleteByProject(Project project);
+    UserProject findByUserAndProject(User user, Project project);
 
     @Query("select up.project from UserProject up where up.user = :user")
     List<Project> userProjects(@Param("user") User user);
