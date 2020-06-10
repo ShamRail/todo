@@ -1,11 +1,13 @@
 package start.todo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import start.todo.model.domain.Category;
 import start.todo.model.domain.Project;
 import start.todo.repo.CategoryRepository;
 import java.util.List;
 
+@Service
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
