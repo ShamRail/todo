@@ -2,6 +2,8 @@ package start.todo.model.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -33,6 +35,9 @@ public class Task {
     private LocalDateTime createDate;
 
     private LocalDateTime expiredDate;
+
+    @OneToMany(mappedBy = "task")
+    private List<Comment> comments = new LinkedList<>();
 
     public Task() {}
 
@@ -143,6 +148,14 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override
