@@ -22,6 +22,9 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<UserProject> users = new LinkedList<>();
 
+    @OneToMany(mappedBy = "project")
+    private List<Category> categories = new LinkedList<>();
+
     public Project() {}
 
     public Project(String title, String description) {
@@ -67,6 +70,14 @@ public class Project {
 
     public void setUsers(List<UserProject> users) {
         this.users = users;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     @Override
