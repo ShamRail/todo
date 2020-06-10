@@ -1,5 +1,9 @@
 package start.todo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import start.todo.model.view.ModelView;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -13,20 +17,30 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
+    @JsonView(ModelView.BasicFields.class)
     private Long id;
 
+    @JsonView(ModelView.BasicFields.class)
     private String username;
 
+    @JsonView(ModelView.BasicFields.class)
     private String email;
 
+    @JsonIgnore
     private String password;
 
+    @JsonView(ModelView.BasicFields.class)
     private LocalDateTime registrationDate;
 
     @OneToMany(mappedBy = "user")
     private List<UserProject> projects = new LinkedList<>();
 
     public User() {}
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     public User(Long id) {
         this.id = id;
