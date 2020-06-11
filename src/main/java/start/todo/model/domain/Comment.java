@@ -1,5 +1,8 @@
 package start.todo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
+import start.todo.model.view.ModelView;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -9,13 +12,18 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(ModelView.BasicFields.class)
     private Long id;
 
+    @JsonView(ModelView.BasicFields.class)
     private String text;
 
-    private LocalDateTime date;
+    @JsonView(ModelView.BasicFields.class)
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
+    private LocalDateTime date = LocalDateTime.now();
 
     @ManyToOne
+    @JsonView(ModelView.BasicFields.class)
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,12 +1,14 @@
 package start.todo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import start.todo.model.domain.Comment;
 import start.todo.model.domain.Task;
 import start.todo.repo.CommentRepository;
 
 import java.util.List;
 
+@Service
 public class CommentServiceImpl implements CommentService {
 
     @Autowired

@@ -16,6 +16,8 @@ public class TaskContent {
     @OneToOne(mappedBy = "content")
     private Task task;
 
+    public TaskContent() {}
+
     public TaskContent(String text) {
         this.text = text;
     }

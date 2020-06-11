@@ -58,6 +58,14 @@ public class Task {
         this.title = title;
     }
 
+    public Task(Long taskId) {
+        this.id = taskId;
+    }
+
+    public static Task idStub(Long taskId) {
+        return new Task(taskId);
+    }
+
     public Task titleAndDescriptionAndStatus(String title, String description, TaskStatus status) {
         this.title = title;
         this.description = description;
