@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import start.todo.exception.ResourceNotFoundException;
-import start.todo.model.domain.Comment;
-import start.todo.model.domain.Task;
-import start.todo.model.domain.User;
+import start.todo.model.domain.*;
 import start.todo.model.dto.CommentDTO;
 import start.todo.model.view.ModelView;
 import start.todo.service.CommentService;
@@ -26,9 +24,6 @@ public class CommentController {
     private UserService userService;
 
     @Autowired
-    private TaskService taskService;
-
-    @Autowired
     private CommentService commentService;
 
     @PostMapping
@@ -36,19 +31,21 @@ public class CommentController {
     @JsonView(ModelView.BasicFields.class)
     public Comment createComment(
             @PathVariable("userId") Long userId,
+            @PathVariable("projectId") Long projectId,
+            @PathVariable("categoryId") Long categoryId,
+            @PathVariable("groupId") Long groupId,
             @PathVariable("taskId") Long taskId,
             @RequestBody CommentDTO commentDTO) {
         User user = userService.findById(userId);
-        if (user == null) {
-            throw new ResourceNotFoundException("invalid user id!");
-        }
-        if (taskService.findById(taskId) == null) {
-            throw new ResourceNotFoundException("invalid task id!");
-        }
         Comment comment = new Comment();
         mapper.map(commentDTO, comment);
         comment.setAuthor(user);
-        comment.setTask(Task.idStub(taskId));
+        comment.path(
+                Project.idStub(projectId),
+                Category.idStub(categoryId),
+                Group.idStub(groupId),
+                Task.idStub(taskId)
+        );
         return commentService.save(comment);
     }
 
@@ -58,6 +55,13 @@ public class CommentController {
         comment.setId(commentId);
         mapper.map(commentDTO, comment);
         if (!commentService.update(comment)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
+    @DeleteMapping("/{commentId}")
+    public void deleteComment(@PathVariable("commentId") Long commentId) {
+        if (!commentService.delete(commentId)) {
             throw new ResourceNotFoundException("Invalid id");
         }
     }

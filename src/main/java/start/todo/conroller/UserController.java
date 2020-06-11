@@ -27,4 +27,11 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable("userId") Long userId) {
+        if (!userService.delete(userId)) {
+            throw new ResourceNotFoundException("Invalid user id!");
+        }
+    }
+
 }

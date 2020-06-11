@@ -13,9 +13,23 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryDB;
 
+    @Autowired
+    private GroupService groupService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private CommentService commentService;
+
     @Override
     public List<Category> categories(Project project) {
         return categoryDB.findByProject(project);
+    }
+
+    @Override
+    public int deleteByProject(Project project) {
+        return categoryDB.deleteByProject(project);
     }
 
     @Override
@@ -25,6 +39,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean delete(Long id) {
+        commentService.deleteByCategory(Category.idStub(id));
+        taskService.deleteByCategory(Category.idStub(id));
+        groupService.deleteByCategory(Category.idStub(id));
         return categoryDB.delete(id) > 0;
     }
 

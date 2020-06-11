@@ -6,9 +6,7 @@ import start.todo.model.domain.Project;
 import start.todo.model.domain.Role;
 import start.todo.model.domain.User;
 import start.todo.model.domain.UserProject;
-import start.todo.repo.ProjectRepository;
-import start.todo.repo.UserProjectRepository;
-import start.todo.repo.UserRepository;
+import start.todo.repo.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +22,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private UserRepository userDB;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private GroupService groupService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private CommentService commentService;
 
     @Override
     public List<Project> userProjects(User user) {
@@ -88,6 +98,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public boolean delete(Long id) {
+        commentService.deleteByProject(Project.idStub(id));
+        taskService.deleteByProject(Project.idStub(id));
+        groupService.deleteByProject(Project.idStub(id));
+        categoryService.deleteByProject(Project.idStub(id));
+        userProjectDB.deleteByProject(Project.idStub(id));
         return projectDB.delete(id) > 0;
     }
 

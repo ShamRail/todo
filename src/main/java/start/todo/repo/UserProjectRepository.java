@@ -17,6 +17,12 @@ public interface UserProjectRepository extends JpaRepository<UserProject, Long> 
     @Transactional
     int deleteByUserAndProject(User user, Project project);
 
+    @Transactional
+    int deleteByProject(Project project);
+
+    @Transactional
+    int deleteByUser(User user);
+
     UserProject findByUserAndProject(User user, Project project);
 
     @Query("select up.project from UserProject up where up.user = :user")

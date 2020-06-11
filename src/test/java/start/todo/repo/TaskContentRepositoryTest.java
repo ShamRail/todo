@@ -29,9 +29,9 @@ public class TaskContentRepositoryTest {
         task.setContent(taskContent);
         taskDB.save(task);
 
-        Long contentID = taskDB.findById(task.getId()).get().getId();
+        //Long contentID = taskDB.findById(task.getId()).get().getId();
 
-        taskContentRepository.update(contentID, "new content");
+        taskContentRepository.update(taskContent.getId(), "new content");
 
         Task out = taskDB.taskWithContent(task.getId());
         Assert.assertThat(out.getContent().getText(), Is.is("new content"));

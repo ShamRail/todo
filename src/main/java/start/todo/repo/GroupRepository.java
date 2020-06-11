@@ -25,6 +25,16 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     @Transactional
     int delete(@Param("id") Long id);
 
+    @Modifying(clearAutomatically = true)
+    @Query("delete from Group g where g.project = :prj")
+    @Transactional
+    int deleteByProject(@Param("prj") Project prj);
+
+    @Modifying(clearAutomatically = true)
+    @Query("delete from Group g where g.category = :ctg")
+    @Transactional
+    int deleteByCategory(@Param("ctg") Category ctg);
+
     List<Group> findByProject(Project project);
 
     List<Group> findByCategory(Category category);

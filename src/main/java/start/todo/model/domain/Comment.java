@@ -27,6 +27,15 @@ public class Comment {
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    private Project project;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Group group;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Task task;
 
     public Comment() {}
@@ -41,6 +50,14 @@ public class Comment {
         this.date = date;
         this.author = author;
         this.task = task;
+    }
+
+    public Comment path(Project p, Category c, Group g, Task t) {
+        this.project = p;
+        this.category = c;
+        this.group = g;
+        this.task = t;
+        return this;
     }
 
     public Long getId() {
@@ -81,6 +98,30 @@ public class Comment {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     @Override

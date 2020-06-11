@@ -7,9 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import start.todo.model.domain.Category;
-import start.todo.model.domain.Group;
-import start.todo.model.domain.Project;
+import start.todo.model.domain.*;
+import start.todo.service.GroupService;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +25,12 @@ public class GroupRepositoryTest {
 
     @Autowired
     private ProjectRepository projectDB;
+
+    @Autowired
+    private TaskRepository taskDB;
+
+    @Autowired
+    private CommentRepository commentDB;
 
     @Test
     public void whenCreate() {
@@ -94,6 +99,25 @@ public class GroupRepositoryTest {
         Assert.assertThat(groups.size(), Is.is(2));
         Assert.assertThat(groups.get(0).getTitle(), Is.is(group1.getTitle()));
         Assert.assertThat(groups.get(1).getTitle(), Is.is(group2.getTitle()));
+    }
+
+    @Test
+    public void whenDeleteGroupTaskAlsoDeleted() {
+        Group group = new Group();
+        groupDB.save(group);
+        Task task = new Task("t1", group);
+        taskDB.save(task);
+        Comment comment = new Comment("c1", task);
+        commentDB.save(comment);
+
+        commentDB.deleteByTask(task);
+        taskDB.deleteByGroup(group);
+        groupDB.delete(group.getId());
+
+        Assert.assertThat(groupDB.findAll().size(), Is.is(0));
+        Assert.assertThat(taskDB.findAll().size(), Is.is(0));
+        Assert.assertThat(commentDB.findAll().size(), Is.is(0));
+
     }
 
 }

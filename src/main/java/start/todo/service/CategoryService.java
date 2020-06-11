@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface CategoryService extends BasicCRUD<Category> {
     List<Category> categories(Project project);
+    int deleteByProject(Project project);
 }

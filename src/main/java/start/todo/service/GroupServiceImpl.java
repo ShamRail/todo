@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import start.todo.model.domain.Category;
 import start.todo.model.domain.Group;
+import start.todo.model.domain.Project;
 import start.todo.repo.GroupRepository;
 
 import java.util.List;
@@ -14,9 +15,25 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupRepository groupDB;
 
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private CommentService commentService;
+
     @Override
     public List<Group> groups(Category category) {
         return groupDB.findByCategory(category);
+    }
+
+    @Override
+    public int deleteByProject(Project project) {
+        return groupDB.deleteByProject(project);
+    }
+
+    @Override
+    public int deleteByCategory(Category category) {
+        return groupDB.deleteByCategory(category);
     }
 
     @Override
@@ -26,6 +43,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public boolean delete(Long id) {
+        commentService.deleteByGroup(Group.idStub(id));
+        taskService.deleteByGroup(Group.idStub(id));
         return groupDB.delete(id) > 0;
     }
 

@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @Repository
 public interface TaskContentRepository extends JpaRepository<TaskContent, Long> {
 
-    @Modifying(clearAutomatically = true)
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update TaskContent tc set tc.text = :text where tc.id = :id")
     @Transactional
     int update(@Param("id") Long id, String text);

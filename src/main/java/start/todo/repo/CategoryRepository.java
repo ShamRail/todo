@@ -24,6 +24,11 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Transactional
     int delete(@Param("id") Long id);
 
+    @Modifying(clearAutomatically = true)
+    @Query("delete from Category c where c.project = :prj")
+    @Transactional
+    int deleteByProject(@Param("prj") Project prj);
+
     List<Category> findByProject(Project project);
 
 }

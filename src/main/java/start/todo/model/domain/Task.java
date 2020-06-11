@@ -59,6 +59,11 @@ public class Task {
 
     public Task() {}
 
+    public Task(String title, Group group) {
+        this.title = title;
+        this.group = group;
+    }
+
     public Task(String title) {
         this.title = title;
     }

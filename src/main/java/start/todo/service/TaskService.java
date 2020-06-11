@@ -1,9 +1,6 @@
 package start.todo.service;
 
-import start.todo.model.domain.Group;
-import start.todo.model.domain.Task;
-import start.todo.model.domain.TaskContent;
-import start.todo.model.domain.TaskStatus;
+import start.todo.model.domain.*;
 import start.todo.service.crud.BasicCRUD;
 
 import java.util.List;
@@ -13,4 +10,9 @@ public interface TaskService extends BasicCRUD<Task> {
     boolean markAs(Task task, TaskStatus status);
     Task loadWithContent(Long id);
     boolean updateContent(Task task, TaskContent content);
+
+    int deleteByProject(Project project);
+    int deleteByCategory(Category category);
+    int deleteByGroup(Group group);
+
 }

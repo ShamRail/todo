@@ -2,8 +2,7 @@ package start.todo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import start.todo.model.domain.Comment;
-import start.todo.model.domain.Task;
+import start.todo.model.domain.*;
 import start.todo.repo.CommentRepository;
 
 import java.util.List;
@@ -17,6 +16,26 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> comments(Task task) {
         return commentDB.findByTask(task);
+    }
+
+    @Override
+    public int deleteByProject(Project project) {
+        return commentDB.deleteByProject(project);
+    }
+
+    @Override
+    public int deleteByCategory(Category category) {
+        return commentDB.deleteByCategory(category);
+    }
+
+    @Override
+    public int deleteByGroup(Group group) {
+        return commentDB.deleteByGroup(group);
+    }
+
+    @Override
+    public int deleteByTask(Task task) {
+        return commentDB.deleteByTask(task);
     }
 
     @Override

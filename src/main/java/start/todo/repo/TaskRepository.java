@@ -22,14 +22,24 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     int updateStatus(@Param("id") Long id, @Param("sts") TaskStatus sts);
 
     @Modifying(clearAutomatically = true)
-    @Query("update Task t set t.content = :cnt where t.id = :id")
-    @Transactional
-    int updateContent(@Param("id") Long id, @Param("cnt") TaskContent cnt);
-
-    @Modifying(clearAutomatically = true)
     @Query("delete from Task t where t.id = :id")
     @Transactional
     int delete(@Param("id") Long id);
+
+    @Modifying(clearAutomatically = true)
+    @Query("delete from Task t where t.project = :prj")
+    @Transactional
+    int deleteByProject(@Param("prj") Project prj);
+
+    @Modifying(clearAutomatically = true)
+    @Query("delete from Task t where t.category = :ctg")
+    @Transactional
+    int deleteByCategory(@Param("ctg") Category ctg);
+
+    @Modifying(clearAutomatically = true)
+    @Query("delete from Task t where t.group = :gr")
+    @Transactional
+    int deleteByGroup(@Param("gr") Group gr);
 
     @Query("select t from Task t join fetch t.content where t.id = :id")
     Task taskWithContent(@Param("id") Long id);

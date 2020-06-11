@@ -44,15 +44,6 @@ public class TaskController {
             @PathVariable("categoryId") Long categoryId,
             @PathVariable("groupId") Long groupId,
             @RequestBody TaskDTO taskDTO) {
-//        if (projectService.findById(projectId) == null) {
-//            throw new ResourceNotFoundException("invalid project id!");
-//        }
-//        if (categoryService.findById(categoryId) == null) {
-//            throw new ResourceNotFoundException("invalid category id!");
-//        }
-//        if (groupService.findById(groupId) == null) {
-//            throw new ResourceNotFoundException("invalid group id!");
-//        }
         Task task = new Task();
         mapper.map(taskDTO, task);
         task.path(
@@ -87,6 +78,13 @@ public class TaskController {
         }
     }
 
+    @DeleteMapping("/{taskId}")
+    public void deleteTask(@PathVariable("taskId") Long taskId) {
+        if (!taskService.delete(taskId)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
     @PutMapping("/{taskId}/content")
     public void updateTask(@PathVariable("taskId") Long taskId, @RequestBody Map<String, String> body) {
         Task task = taskService.findById(taskId);
@@ -94,7 +92,6 @@ public class TaskController {
         if (task == null || !taskService.updateContent(task, content)) {
             throw new ResourceNotFoundException("Invalid id");
         }
-
     }
 
 }

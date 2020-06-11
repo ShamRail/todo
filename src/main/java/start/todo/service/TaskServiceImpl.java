@@ -2,10 +2,7 @@ package start.todo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import start.todo.model.domain.Group;
-import start.todo.model.domain.Task;
-import start.todo.model.domain.TaskContent;
-import start.todo.model.domain.TaskStatus;
+import start.todo.model.domain.*;
 import start.todo.repo.TaskContentRepository;
 import start.todo.repo.TaskRepository;
 
@@ -20,6 +17,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskRepository taskDB;
+
+    @Autowired
+    private CommentService commentService;
 
     @Override
     public List<Task> tasks(Group group) {
@@ -42,6 +42,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public int deleteByProject(Project project) {
+        return taskDB.deleteByProject(project);
+    }
+
+    @Override
+    public int deleteByCategory(Category category) {
+        return taskDB.deleteByCategory(category);
+    }
+
+    @Override
+    public int deleteByGroup(Group group) {
+        return taskDB.deleteByGroup(group);
+    }
+
+    @Override
     public Task save(Task entity) {
         entity.setCreateDate(LocalDateTime.now());
         return taskDB.save(entity);
@@ -49,6 +64,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public boolean delete(Long id) {
+        commentService.deleteByTask(Task.idStub(id));
         return taskDB.delete(id) > 0;
     }
 

@@ -45,12 +45,6 @@ public class GroupController {
             @PathVariable("projectId") Long projectId,
             @PathVariable("categoryId") Long categoryId,
             @RequestBody GroupDTO groupDTO) {
-//        if (projectService.findById(projectId) == null) {
-//            throw new ResourceNotFoundException("project not exist!");
-//        }
-//        if (categoryService.findById(categoryId) == null) {
-//            throw new ResourceNotFoundException("category not exist!");
-//        }
         Group group = new Group();
         mapper.map(groupDTO, group);
         group.setProject(Project.idStub(projectId));
@@ -79,6 +73,13 @@ public class GroupController {
         Group group = new Group(groupId);
         mapper.map(groupDTO, group);
         if (!groupService.update(group)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
+    @DeleteMapping("/{groupId}")
+    public void deleteGroup(@PathVariable("groupId") Long groupId) {
+        if (!groupService.delete(groupId)) {
             throw new ResourceNotFoundException("Invalid id");
         }
     }

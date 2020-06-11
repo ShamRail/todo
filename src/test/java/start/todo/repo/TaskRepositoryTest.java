@@ -29,6 +29,9 @@ public class TaskRepositoryTest {
     @Autowired
     private ProjectRepository projectDB;
 
+    @Autowired
+    private CommentRepository commentDB;
+
     @Test
     public void whenCreate() {
         Task task = new Task();
@@ -142,6 +145,22 @@ public class TaskRepositoryTest {
                 taskDB.taskWithContent(task.getId()).getContent().getText(),
                 Is.is("content")
         );
+    }
+
+    @Test
+    public void whenDeleteTaskThenCommentsAlsoDelete() {
+        Task task = new Task();
+        taskDB.save(task);
+
+        Comment comment1 = new Comment("c1", task);
+        Comment comment2 = new Comment("c2", task);
+        Comment comment3 = new Comment("c3", task);
+        commentDB.saveAll(List.of(comment1, comment2, comment3));
+
+        Assert.assertThat(commentDB.findAll().size(), Is.is(3));
+        commentDB.deleteByTask(task);
+        taskDB.delete(task.getId());
+        Assert.assertThat(commentDB.findAll().size(), Is.is(0));
     }
 
 }

@@ -83,4 +83,12 @@ public class ProjectController {
         }
     }
 
+    @DeleteMapping("/{projectId}")
+    public void deleteProject(
+            @PathVariable("projectId") Long projectId) {
+        if (!projectService.delete(projectId)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
 }

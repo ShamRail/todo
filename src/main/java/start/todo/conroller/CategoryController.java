@@ -39,9 +39,6 @@ public class CategoryController {
     public Category createCategory(@PathVariable("projectId") Long projectId,
                                    @RequestBody CategoryDTO categoryDTO) {
         Project project = Project.idStub(projectId);
-//        if (projectService.findById(projectId) == null) {
-//            throw new ResourceNotFoundException("Invalid project id!");
-//        }
         Category category = new Category();
         mapper.map(categoryDTO, category);
         category.setProject(project);
@@ -69,6 +66,13 @@ public class CategoryController {
         Category category = new Category(categoryId);
         mapper.map(categoryDTO, category);
         if (!categoryService.update(category)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
+    @DeleteMapping("/{categoryId}")
+    public void deleteCategory(@PathVariable Long categoryId) {
+        if (!categoryService.delete(categoryId)) {
             throw new ResourceNotFoundException("Invalid id");
         }
     }
