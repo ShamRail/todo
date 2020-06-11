@@ -36,6 +36,14 @@ public class Category {
         this.project = project;
     }
 
+    public Category(Long categoryId) {
+        this.id = categoryId;
+    }
+
+    public static Category idStub(Long categoryId) {
+        return new Category(categoryId);
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,5 +1,8 @@
 package start.todo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import start.todo.model.view.ModelView;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -12,10 +15,13 @@ public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(ModelView.BasicFields.class)
     private Long id;
 
+    @JsonView(ModelView.BasicFields.class)
     private String title;
 
+    @JsonView(ModelView.BasicFields.class)
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
