@@ -5,11 +5,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import start.todo.exception.InvalidArgsException;
 import start.todo.exception.ResourceNotFoundException;
 import start.todo.model.domain.*;
 import start.todo.model.dto.TaskDTO;
 import start.todo.model.view.ModelView;
 import start.todo.service.*;
+import start.todo.util.StatusParser;
 
 import java.util.List;
 import java.util.Map;
@@ -91,6 +93,19 @@ public class TaskController {
         TaskContent content = new TaskContent(body.get("text"));
         if (task == null || !taskService.updateContent(task, content)) {
             throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
+    @PutMapping("/{taskId}/status")
+    public void updateStatus(
+            @PathVariable("taskId") Long taskId,
+            @RequestParam String status) {
+        TaskStatus sts = StatusParser.parse(status);
+        if (sts == null) {
+            throw new InvalidArgsException("Invalid status. Must be COMPLETED or IN_PROGRESS");
+        }
+        if (!taskService.markAs(Task.idStub(taskId), sts)) {
+            throw new ResourceNotFoundException("Invalid id!");
         }
     }
 
