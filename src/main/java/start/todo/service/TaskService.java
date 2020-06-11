@@ -15,4 +15,5 @@ public interface TaskService extends BasicCRUD<Task> {
     int deleteByCategory(Category category);
     int deleteByGroup(Group group);
 
+    List<Task> findByProject(Project project);
 }

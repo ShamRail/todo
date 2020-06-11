@@ -37,6 +37,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public List<Group> findByProject(Project project) {
+        return groupDB.findByProject(project);
+    }
+
+    @Override
     public Group save(Group entity) {
         return groupDB.save(entity);
     }

@@ -12,4 +12,6 @@ public interface GroupService extends BasicCRUD<Group> {
 
     int deleteByProject(Project project);
     int deleteByCategory(Category category);
+
+    List<Group> findByProject(Project project);
 }

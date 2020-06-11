@@ -33,6 +33,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findByProject(Project project) {
+        return categoryDB.findByProject(project);
+    }
+
+    @Override
     public Category save(Category entity) {
         return categoryDB.save(entity);
     }
