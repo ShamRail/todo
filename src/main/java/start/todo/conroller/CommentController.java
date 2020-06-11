@@ -52,4 +52,14 @@ public class CommentController {
         return commentService.save(comment);
     }
 
+    @PutMapping("/{commentId}")
+    public void updateComment(@PathVariable("commentId") Long commentId, @RequestBody CommentDTO commentDTO) {
+        Comment comment = new Comment();
+        comment.setId(commentId);
+        mapper.map(commentDTO, comment);
+        if (!commentService.update(comment)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
 }

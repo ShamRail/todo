@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import start.todo.exception.InvalidArgsException;
 import start.todo.exception.ResourceNotFoundException;
@@ -70,4 +71,16 @@ public class ProjectController {
         out.setCategories(categoryService.categories(project));
         return out;
     }
+
+    @PutMapping("/{projectId}")
+    public void updateProject(
+            @PathVariable("projectId") Long projectId,
+            @RequestBody ProjectDTO projectDTO) {
+        Project project = new Project(projectId);
+        mapper.map(projectDTO, project);
+        if (!projectService.update(project)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
 }

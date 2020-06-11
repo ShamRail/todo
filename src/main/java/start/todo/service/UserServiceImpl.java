@@ -2,6 +2,7 @@ package start.todo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import start.todo.model.domain.User;
 import start.todo.repo.UserRepository;
 

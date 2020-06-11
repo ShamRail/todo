@@ -74,4 +74,13 @@ public class GroupController {
         return group;
     }
 
+    @PutMapping("/{groupId}")
+    public void updateGroup(@PathVariable("groupId") Long groupId, @RequestBody GroupDTO groupDTO) {
+        Group group = new Group(groupId);
+        mapper.map(groupDTO, group);
+        if (!groupService.update(group)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
 }

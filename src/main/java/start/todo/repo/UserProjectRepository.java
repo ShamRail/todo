@@ -8,11 +8,13 @@ import start.todo.model.domain.Project;
 import start.todo.model.domain.User;
 import start.todo.model.domain.UserProject;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
 public interface UserProjectRepository extends JpaRepository<UserProject, Long> {
 
+    @Transactional
     int deleteByUserAndProject(User user, Project project);
 
     UserProject findByUserAndProject(User user, Project project);

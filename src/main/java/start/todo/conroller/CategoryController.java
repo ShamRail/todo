@@ -64,4 +64,13 @@ public class CategoryController {
         return category;
     }
 
+    @PutMapping("/{categoryId}")
+    public void updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO categoryDTO) {
+        Category category = new Category(categoryId);
+        mapper.map(categoryDTO, category);
+        if (!categoryService.update(category)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
 }

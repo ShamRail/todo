@@ -6,20 +6,29 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import start.todo.model.domain.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Modifying(clearAutomatically = true)
     @Query("update Task t set t.title = :#{#task.title}, t.description = :#{#task.description}, t.expiredDate = :#{#task.expiredDate}")
+    @Transactional
     int update(@Param("task") Task task);
 
     @Modifying(clearAutomatically = true)
     @Query("update Task t set t.status = :sts where t.id = :id")
+    @Transactional
     int updateStatus(@Param("id") Long id, @Param("sts") TaskStatus sts);
 
     @Modifying(clearAutomatically = true)
+    @Query("update Task t set t.content = :cnt where t.id = :id")
+    @Transactional
+    int updateContent(@Param("id") Long id, @Param("cnt") TaskContent cnt);
+
+    @Modifying(clearAutomatically = true)
     @Query("delete from Task t where t.id = :id")
+    @Transactional
     int delete(@Param("id") Long id);
 
     @Query("select t from Task t join fetch t.content where t.id = :id")

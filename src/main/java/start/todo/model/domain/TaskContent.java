@@ -1,5 +1,7 @@
 package start.todo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import start.todo.model.view.ModelView;
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -11,6 +13,7 @@ public class TaskContent {
     private Long id;
 
     @Column(columnDefinition = "TEXT")
+    @JsonView(ModelView.FieldsGroupContent.class)
     private String text;
 
     @OneToOne(mappedBy = "content")
@@ -38,6 +41,14 @@ public class TaskContent {
         this.text = text;
     }
 
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,4 +61,5 @@ public class TaskContent {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

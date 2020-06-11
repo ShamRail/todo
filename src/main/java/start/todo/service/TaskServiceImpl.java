@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import start.todo.model.domain.Group;
 import start.todo.model.domain.Task;
+import start.todo.model.domain.TaskContent;
 import start.todo.model.domain.TaskStatus;
+import start.todo.repo.TaskContentRepository;
 import start.todo.repo.TaskRepository;
 
 import java.time.LocalDateTime;
@@ -12,6 +14,9 @@ import java.util.List;
 
 @Service
 public class TaskServiceImpl implements TaskService {
+
+    @Autowired
+    private TaskContentRepository contentDB;
 
     @Autowired
     private TaskRepository taskDB;
@@ -29,6 +34,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task loadWithContent(Long id) {
         return taskDB.taskWithContent(id);
+    }
+
+    @Override
+    public boolean updateContent(Task task, TaskContent content) {
+        return contentDB.update(task.getContent().getId(), content.getText()) > 0;
     }
 
     @Override

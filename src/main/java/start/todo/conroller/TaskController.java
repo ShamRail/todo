@@ -12,6 +12,7 @@ import start.todo.model.view.ModelView;
 import start.todo.service.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/user/{userId}/project/{projectId}/category/{categoryId}/group/{groupId}/task")
@@ -76,4 +77,24 @@ public class TaskController {
         task.setGroup(group);
         return task;
     }
+
+    @PutMapping("/{taskId}")
+    public void updateTask(@PathVariable("taskId") Long taskId, @RequestBody TaskDTO taskDTO) {
+        Task task = new Task(taskId);
+        mapper.map(taskDTO, task);
+        if (!taskService.update(task)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
+    @PutMapping("/{taskId}/content")
+    public void updateTask(@PathVariable("taskId") Long taskId, @RequestBody Map<String, String> body) {
+        Task task = taskService.findById(taskId);
+        TaskContent content = new TaskContent(body.get("text"));
+        if (task == null || !taskService.updateContent(task, content)) {
+            throw new ResourceNotFoundException("Invalid id");
+        }
+
+    }
+
 }

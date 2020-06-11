@@ -5,21 +5,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import start.todo.model.domain.Project;
+import start.todo.model.domain.Task;
+import start.todo.model.domain.TaskContent;
 
 import javax.transaction.Transactional;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project, Long> {
+public interface TaskContentRepository extends JpaRepository<TaskContent, Long> {
 
     @Modifying(clearAutomatically = true)
-    @Query("update Project p set p.title = :#{#project.title}, p.description = :#{#project.description}")
+    @Query("update TaskContent tc set tc.text = :text where tc.id = :id")
     @Transactional
-    int update(@Param("project") Project project);
-
-    @Modifying(clearAutomatically = true)
-    @Query("delete from Project p where p.id = :id")
-    @Transactional
-    int delete(@Param("id") Long id);
+    int update(@Param("id") Long id, String text);
 
 }
