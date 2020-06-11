@@ -93,7 +93,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project findById(Long id) {
-        return projectDB.findById(id).orElse(new Project());
+        return projectDB.findById(id).orElse(null);
     }
 
     @Override

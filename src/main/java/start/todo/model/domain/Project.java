@@ -50,6 +50,14 @@ public class Project {
         this.createDate = createDate;
     }
 
+    public Project(Long projectId) {
+        this.id = projectId;
+    }
+
+    public static Project idStub(Long projectId) {
+        return new Project(projectId);
+    }
+
     public Long getId() {
         return id;
     }
