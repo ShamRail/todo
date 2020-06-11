@@ -1,6 +1,11 @@
 package start.todo.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
+import start.todo.model.view.ModelView;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,14 +16,26 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(ModelView.BasicFields.class)
     private Long id;
 
+    @JsonView(ModelView.BasicFields.class)
     private String title;
 
+    @JsonView(ModelView.BasicFields.class)
     private String description;
 
+    @JsonView(ModelView.BasicFields.class)
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    private LocalDate expiredDate;
+
     @Enumerated(value = EnumType.STRING)
-    private TaskStatus status;
+    @JsonView(ModelView.BasicFields.class)
+    private TaskStatus status = TaskStatus.IN_PROGRESS;
+
+    @JsonView(ModelView.BasicFields.class)
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
+    private LocalDateTime createDate;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private TaskContent content;
@@ -31,10 +48,6 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
-
-    private LocalDateTime createDate;
-
-    private LocalDateTime expiredDate;
 
     @OneToMany(mappedBy = "task")
     private List<Comment> comments = new LinkedList<>();
@@ -57,7 +70,7 @@ public class Task {
         return this;
     }
 
-    public Task createAndExpiredDates(LocalDateTime createDate, LocalDateTime expiredDate) {
+    public Task createAndExpiredDates(LocalDateTime createDate, LocalDate expiredDate) {
         this.createDate = createDate;
         this.expiredDate = expiredDate;
         return this;
@@ -134,11 +147,11 @@ public class Task {
         this.createDate = createDate;
     }
 
-    public LocalDateTime getExpiredDate() {
+    public LocalDate getExpiredDate() {
         return expiredDate;
     }
 
-    public void setExpiredDate(LocalDateTime expiredDate) {
+    public void setExpiredDate(LocalDate expiredDate) {
         this.expiredDate = expiredDate;
     }
 

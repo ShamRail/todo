@@ -7,6 +7,7 @@ import start.todo.model.domain.Task;
 import start.todo.model.domain.TaskStatus;
 import start.todo.repo.TaskRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,6 +28,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task save(Task entity) {
+        entity.setCreateDate(LocalDateTime.now());
         return taskDB.save(entity);
     }
 
@@ -37,7 +39,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task findById(Long id) {
-        return taskDB.findById(id).orElse(new Task());
+        return taskDB.findById(id).orElse(null);
     }
 
     @Override

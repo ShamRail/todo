@@ -31,7 +31,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group findById(Long id) {
-        return groupDB.findById(id).orElse(new Group());
+        return groupDB.findById(id).orElse(null);
     }
 
     @Override

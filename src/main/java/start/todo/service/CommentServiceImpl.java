@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment findById(Long id) {
-        return commentDB.findById(id).orElse(new Comment());
+        return commentDB.findById(id).orElse(null);
     }
 
     @Override

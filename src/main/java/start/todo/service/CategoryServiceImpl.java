@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(Long id) {
-        return categoryDB.findById(id).orElse(new Category());
+        return categoryDB.findById(id).orElse(null);
     }
 
     @Override
