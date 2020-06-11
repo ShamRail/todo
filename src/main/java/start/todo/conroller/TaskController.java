@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import start.todo.exception.ResourceNotFoundException;
-import start.todo.model.domain.Task;
-import start.todo.model.domain.TaskContent;
-import start.todo.model.domain.TaskStatus;
+import start.todo.model.domain.*;
 import start.todo.model.dto.TaskDTO;
 import start.todo.model.view.ModelView;
 import start.todo.service.CategoryService;
@@ -54,6 +52,9 @@ public class TaskController {
         }
         Task task = new Task();
         mapper.map(taskDTO, task);
+        task.path(
+                Project.idStub(projectId), Category.idStub(categoryId), Group.idStub(groupId)
+        );
         task.setContent(new TaskContent(taskDTO.getContent()));
         return taskService.save(task);
     }

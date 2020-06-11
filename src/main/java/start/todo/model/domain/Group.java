@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import start.todo.model.view.ModelView;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -25,13 +24,15 @@ public class Group {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView(value = {ModelView.FieldsCategory.class, ModelView.FieldsCategoryTasks.class})
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
     @OneToMany(mappedBy = "group")
-    private List<Task> groups = new LinkedList<>();
+    @JsonView(ModelView.FieldsCategoryTasks.class)
+    private List<Task> tasks = new LinkedList<>();
 
     public Group() {}
 
@@ -40,6 +41,14 @@ public class Group {
         this.description = description;
         this.category = category;
         this.project = project;
+    }
+
+    public Group(Long groupId) {
+        this.id = groupId;
+    }
+
+    public static Group idStub(Long groupId) {
+        return new Group(groupId);
     }
 
     public Group titleAndDescription(String title, String description) {
@@ -94,12 +103,12 @@ public class Group {
         this.project = project;
     }
 
-    public List<Task> getGroups() {
-        return groups;
+    public List<Task> getTasks() {
+        return tasks;
     }
 
-    public void setGroups(List<Task> groups) {
-        this.groups = groups;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     @Override

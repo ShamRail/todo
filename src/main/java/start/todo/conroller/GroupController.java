@@ -9,11 +9,15 @@ import start.todo.exception.ResourceNotFoundException;
 import start.todo.model.domain.Category;
 import start.todo.model.domain.Group;
 import start.todo.model.domain.Project;
+import start.todo.model.domain.Task;
 import start.todo.model.dto.GroupDTO;
 import start.todo.model.view.ModelView;
 import start.todo.service.CategoryService;
 import start.todo.service.GroupService;
 import start.todo.service.ProjectService;
+import start.todo.service.TaskService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/user/{userId}/project/{projectId}/category/{categoryId}/group")
@@ -30,6 +34,9 @@ public class GroupController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private TaskService taskService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -49,6 +56,22 @@ public class GroupController {
         group.setProject(Project.idStub(projectId));
         group.setCategory(Category.idStub(categoryId));
         return groupService.save(group);
+    }
+
+    @GetMapping("/{groupId}")
+    @JsonView(ModelView.FieldsCategoryTasks.class)
+    public Group loadById(
+            @PathVariable("categoryId") Long categoryId,
+            @PathVariable("groupId") Long groupId) {
+        Category category = categoryService.findById(categoryId);
+        Group group = groupService.findById(groupId);
+        if (category == null || group == null) {
+            throw new ResourceNotFoundException("Invalid category or group id");
+        }
+        List<Task> tasks = taskService.tasks(group);
+        group.setCategory(category);
+        group.setTasks(tasks);
+        return group;
     }
 
 }

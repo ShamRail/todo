@@ -12,15 +12,12 @@ public class ModelView {
     public static class FieldsProjectGroups extends FieldsProject {}
 
     // Views for Group
-    public static class GroupCategory extends BasicFields {}
-    public static class GroupCategoryTask extends GroupCategory {}
+    public static class FieldsCategory extends BasicFields {}
+    public static class FieldsCategoryTasks extends FieldsCategory {}
 
     // Views for Task
-    public static class TaskGroup extends BasicFields {}
-    public static class TaskGroupContent extends TaskGroup {}
-    public static class TaskGroupContentComments extends TaskGroupContent {}
-
-    // Views for comment
-
+    public static class FieldsGroup extends BasicFields {}
+    public static class FieldsGroupContent extends FieldsGroup {}
+    public static class FieldsGroupContentComments extends FieldsGroupContent {}
 
 }
