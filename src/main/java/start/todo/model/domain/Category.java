@@ -23,9 +23,11 @@ public class Category {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView(value = {ModelView.FieldsProject.class, ModelView.FieldsProjectGroups.class})
     private Project project;
 
     @OneToMany(mappedBy = "category")
+    @JsonView(ModelView.FieldsProjectGroups.class)
     private List<Group> groups = new LinkedList<>();
 
     public Category() {}

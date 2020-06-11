@@ -56,6 +56,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
+    @JsonView(ModelView.FieldsCategories.class)
     public Project fullProject(
             @PathVariable("userId") Long userId,
             @PathVariable("projectId") Long projectId) {

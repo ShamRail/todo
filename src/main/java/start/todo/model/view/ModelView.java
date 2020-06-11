@@ -8,8 +8,8 @@ public class ModelView {
     public static class FieldsCategories extends BasicFields {}
 
     // Views for Category
-    public static class CategoryProject extends BasicFields {}
-    public static class CategoryProjectGroups extends CategoryProject {}
+    public static class FieldsProject extends BasicFields {}
+    public static class FieldsProjectGroups extends FieldsProject {}
 
     // Views for Group
     public static class GroupCategory extends BasicFields {}
