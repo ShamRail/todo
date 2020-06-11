@@ -10,6 +10,7 @@ import start.todo.exception.InvalidArgsException;
 import start.todo.exception.ResourceNotFoundException;
 import start.todo.model.domain.Project;
 import start.todo.model.domain.User;
+import start.todo.model.dto.ParticipantDTO;
 import start.todo.model.dto.ProjectDTO;
 import start.todo.model.view.ModelView;
 import start.todo.service.CategoryService;
@@ -17,6 +18,7 @@ import start.todo.service.ProjectService;
 import start.todo.service.UserService;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/user/{userId}/project")
@@ -88,6 +90,38 @@ public class ProjectController {
             @PathVariable("projectId") Long projectId) {
         if (!projectService.delete(projectId)) {
             throw new ResourceNotFoundException("Invalid id");
+        }
+    }
+
+    @GetMapping("/{projectId}/participant")
+    public List<ParticipantDTO> participants(@PathVariable("projectId") Long projectId) {
+        return projectService.participants(Project.idStub(projectId)).stream()
+                .map(up -> {
+                    ParticipantDTO dto = new ParticipantDTO();
+                    User user = up.getUser();
+                    mapper.map(user, dto);
+                    dto.setRole(up.getRole());
+                    dto.setId(up.getId());
+                    return dto;
+                }).collect(Collectors.toList());
+    }
+
+    @PostMapping("/{projectId}/participant")
+    @JsonView(ModelView.BasicFields.class)
+    public void addParticipant(
+            @PathVariable("projectId") Long projectId,
+            @RequestParam String email) {
+        User user = userService.findByEmail(email);
+        if (!projectService.addParticipant(Project.idStub(projectId), user)) {
+            throw new InvalidArgsException("user is already in project");
+        }
+    }
+
+    @DeleteMapping("/{projectId}/participant/{pId}")
+    @JsonView(ModelView.BasicFields.class)
+    public void dropParticipant(@PathVariable("projectId") Long projectId, @PathVariable("pId") Long pId) {
+        if (!projectService.dropParticipant(Project.idStub(projectId), User.idStub(pId))) {
+            throw new ResourceNotFoundException("Invalid user or project id");
         }
     }
 

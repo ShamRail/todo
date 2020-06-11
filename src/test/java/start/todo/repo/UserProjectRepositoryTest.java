@@ -12,6 +12,7 @@ import start.todo.model.domain.Role;
 import start.todo.model.domain.User;
 import start.todo.model.domain.UserProject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -55,7 +56,7 @@ public class UserProjectRepositoryTest {
                 new UserProject(user1, project),
                 new UserProject(user2, project)
         ));
-        List<User> users = userProjectDB.projectUsers(project);
+        List<User> users = userProjectDB.projectUsers(project).stream().map(UserProject::getUser).collect(Collectors.toList());
         Assert.assertThat(users.get(0).getUsername(), Is.is(user1.getUsername()));
         Assert.assertThat(users.get(1).getUsername(), Is.is(user2.getUsername()));
     }

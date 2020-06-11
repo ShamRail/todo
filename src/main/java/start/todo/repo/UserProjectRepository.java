@@ -28,7 +28,7 @@ public interface UserProjectRepository extends JpaRepository<UserProject, Long> 
     @Query("select up.project from UserProject up where up.user = :user")
     List<Project> userProjects(@Param("user") User user);
 
-    @Query("select up.user from UserProject up where up.project = :project")
-    List<User> projectUsers(@Param("project") Project project);
+    @Query("select up from UserProject up join fetch up.user where up.project = :project")
+    List<UserProject> projectUsers(@Param("project") Project project);
 
 }

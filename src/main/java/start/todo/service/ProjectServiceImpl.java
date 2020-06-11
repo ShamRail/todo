@@ -41,13 +41,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<User> participants(Project project) {
+    public List<UserProject> participants(Project project) {
         return userProjectDB.projectUsers(project);
     }
 
     @Override
     public boolean createProject(User user, Project project) {
-        if (user.getId() == null) {
+        if (user == null) {
             return false;
         }
         projectDB.save(project);
@@ -70,10 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public boolean addParticipant(Project project, User user) {
-        if (project.getId() == null || user.getId() == null) {
-            return false;
-        }
-        if (projectDB.findById(project.getId()).isEmpty() || userDB.findById(user.getId()).isEmpty()) {
+        if (project == null || user == null) {
             return false;
         }
         if (userProjectDB.findByUserAndProject(user, project) != null) {
