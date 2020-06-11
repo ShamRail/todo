@@ -45,12 +45,12 @@ public class GroupController {
             @PathVariable("projectId") Long projectId,
             @PathVariable("categoryId") Long categoryId,
             @RequestBody GroupDTO groupDTO) {
-        if (projectService.findById(projectId) == null) {
-            throw new ResourceNotFoundException("project not exist!");
-        }
-        if (categoryService.findById(categoryId) == null) {
-            throw new ResourceNotFoundException("category not exist!");
-        }
+//        if (projectService.findById(projectId) == null) {
+//            throw new ResourceNotFoundException("project not exist!");
+//        }
+//        if (categoryService.findById(categoryId) == null) {
+//            throw new ResourceNotFoundException("category not exist!");
+//        }
         Group group = new Group();
         mapper.map(groupDTO, group);
         group.setProject(Project.idStub(projectId));

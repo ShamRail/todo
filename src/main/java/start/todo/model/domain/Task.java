@@ -38,9 +38,13 @@ public class Task {
     private LocalDateTime createDate;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonView(value = {
+            ModelView.FieldsGroupContent.class,
+    })
     private TaskContent content;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView(ModelView.FieldsGroup.class)
     private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,6 +54,7 @@ public class Task {
     private Project project;
 
     @OneToMany(mappedBy = "task")
+    @JsonView(ModelView.FieldsGroupContentComments.class)
     private List<Comment> comments = new LinkedList<>();
 
     public Task() {}

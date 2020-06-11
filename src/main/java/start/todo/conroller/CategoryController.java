@@ -39,9 +39,9 @@ public class CategoryController {
     public Category createCategory(@PathVariable("projectId") Long projectId,
                                    @RequestBody CategoryDTO categoryDTO) {
         Project project = Project.idStub(projectId);
-        if (projectService.findById(projectId) == null) {
-            throw new ResourceNotFoundException("Invalid project id!");
-        }
+//        if (projectService.findById(projectId) == null) {
+//            throw new ResourceNotFoundException("Invalid project id!");
+//        }
         Category category = new Category();
         mapper.map(categoryDTO, category);
         category.setProject(project);

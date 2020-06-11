@@ -27,6 +27,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Task loadWithContent(Long id) {
+        return taskDB.taskWithContent(id);
+    }
+
+    @Override
     public Task save(Task entity) {
         entity.setCreateDate(LocalDateTime.now());
         return taskDB.save(entity);
