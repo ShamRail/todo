@@ -21,19 +21,19 @@ public class DashBoardController {
     private DashboardService dashboardService;
 
     @GetMapping("/project/today")
-    @JsonView(ModelView.BasicFields.class)
+    @JsonView(ModelView.FieldsPath.class)
     public List<Task> todayTask(@PathVariable("userId") Long userId) {
         return dashboardService.todayTasks(User.idStub(userId));
     }
 
     @GetMapping("/project/outdate")
-    @JsonView(ModelView.BasicFields.class)
+    @JsonView(ModelView.FieldsPath.class)
     public List<Task> outDate(@PathVariable("userId") Long userId) {
         return dashboardService.outDatedTasks(User.idStub(userId));
     }
 
     @GetMapping("/project/week")
-    @JsonView(ModelView.BasicFields.class)
+    @JsonView(ModelView.FieldsPath.class)
     public List<Task> thisWeek(@PathVariable("userId") Long userId) {
         return dashboardService.thisWeekTasks(User.idStub(userId));
     }
@@ -64,8 +64,8 @@ public class DashBoardController {
     }
 
     @GetMapping("/project/all")
-    @JsonView(ModelView.BasicFields.class)
-    public Map<String, List<Task>> allTasks(@PathVariable("userId") Long userId) {
+    @JsonView(ModelView.FieldsPath.class)
+    public List<Task> allTasks(@PathVariable("userId") Long userId) {
         return dashboardService.allTasks(User.idStub(userId));
     }
 

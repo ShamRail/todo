@@ -62,6 +62,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> loadWithStructure(Project project) {
+        return taskDB.loadWithStructure(project);
+    }
+
+    @Override
     public Task save(Task entity) {
         entity.setCreateDate(LocalDateTime.now());
         return taskDB.save(entity);

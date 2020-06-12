@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface StructuralLoaderService {
 
-    Map<String, List<Task>> allTasks(User user);
+    List<Task> allTasks(User user);
     List<Task> tasksByProject(Project project);
     List<Category> categoriesByProject(Project project);
     List<Group> groupsByProject(Project project);

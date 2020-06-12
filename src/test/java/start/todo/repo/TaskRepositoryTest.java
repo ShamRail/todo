@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import start.todo.model.domain.*;
+import start.todo.service.TaskService;
 
 import java.util.List;
 import java.util.Optional;
@@ -161,6 +162,29 @@ public class TaskRepositoryTest {
         commentDB.deleteByTask(task);
         taskDB.delete(task.getId());
         Assert.assertThat(commentDB.findAll().size(), Is.is(0));
+    }
+
+    @Test
+    public void whenLoadWithStructure() {
+        Project project = new Project("pt", "pd");
+        Category category = new Category("ct", "cd", project);
+        Group group = new Group("gt", "gd", category, project);
+        Task task = new Task()
+                .titleAndDescriptionAndStatus("tt", "td", TaskStatus.COMPLETED)
+                .path(project, category, group);
+
+        projectDB.save(project);
+        categoryDB.save(category);
+        groupDB.save(group);
+        taskDB.save(task);
+
+        List<Task> tasks = taskDB.loadWithStructure(project);
+        Assert.assertEquals(tasks.get(0).getProject().getTitle(), project.getTitle());
+        Assert.assertEquals(tasks.get(0).getCategory().getTitle(), category.getTitle());
+        Assert.assertEquals(tasks.get(0).getGroup().getTitle(), group.getTitle());
+        Assert.assertEquals(tasks.get(0).getTitle(), task.getTitle());
+
+
     }
 
 }

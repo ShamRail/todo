@@ -44,13 +44,15 @@ public class Task {
     private TaskContent content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonView(ModelView.FieldsGroup.class)
+    @JsonView(value = {ModelView.FieldsGroup.class, ModelView.FieldsPath.class})
     private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView(ModelView.FieldsPath.class)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView(ModelView.FieldsPath.class)
     private Project project;
 
     @OneToMany(mappedBy = "task")

@@ -34,14 +34,11 @@ public class DashboardServiceImpl implements DashboardService {
     private GroupService groupService;
 
     @Override
-    public Map<String, List<Task>> allTasks(User user) {
+    public List<Task> allTasks(User user) {
         return projectService.userProjects(user)
                 .stream()
-                .collect(Collectors.toMap(
-                        Project::getTitle,
-                        p -> taskService.findByProject(p),
-                        (pr, curr) -> pr
-                ));
+                .flatMap(p -> taskService.loadWithStructure(p).stream())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -129,7 +126,7 @@ public class DashboardServiceImpl implements DashboardService {
     private List<Task> findByPredicate(User user, Predicate<Task> condition) {
         List<Project> userProjects = projectService.userProjects(user);
         return userProjects.stream()
-                .flatMap(project -> taskService.findByProject(project).stream())
+                .flatMap(project -> taskService.loadWithStructure(project).stream())
                 .filter(condition)
                 .collect(Collectors.toList());
     }

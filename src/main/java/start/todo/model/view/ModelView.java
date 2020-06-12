@@ -3,6 +3,7 @@ package start.todo.model.view;
 public class ModelView {
 
     public static class BasicFields {}
+    public static class FieldsPath extends BasicFields {}
 
     // Views for Project
     public static class FieldsCategories extends BasicFields {}

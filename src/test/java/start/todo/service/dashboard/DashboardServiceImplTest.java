@@ -65,16 +65,12 @@ public class DashboardServiceImplTest {
         Task task4 = new Task(4L).createAndExpiredDates(LocalDateTime.now(), LocalDate.now());
 
         Mockito.when(projectService.userProjects(user)).thenReturn(userProjects);
-        Mockito.when(taskService.findByProject(projectOne)).thenReturn(List.of(task1, task2));
-        Mockito.when(taskService.findByProject(projectTwo)).thenReturn(List.of(task3, task4));
+        Mockito.when(taskService.loadWithStructure(projectOne)).thenReturn(List.of(task1, task2));
+        Mockito.when(taskService.loadWithStructure(projectTwo)).thenReturn(List.of(task3, task4));
 
-        Map<String, List<Task>> result = dashboardService.allTasks(user);
+        List<Task> result = dashboardService.allTasks(user);
 
-        Assert.assertThat(result.size(), Is.is(2));
-        Assert.assertTrue(result.containsKey("one"));
-        Assert.assertTrue(result.containsKey("two"));
-        Assert.assertThat(result.get("one"), Is.is(List.of(task1, task2)));
-        Assert.assertThat(result.get("two"), Is.is(List.of(task3, task4)));
+        Assert.assertThat(result, Is.is(List.of(task1, task2, task3, task4)));
     }
 
     @Test
@@ -189,8 +185,8 @@ public class DashboardServiceImplTest {
         Task task4 = new Task(4L).createAndExpiredDates(LocalDateTime.now(), LocalDate.now());
 
         Mockito.when(projectService.userProjects(user)).thenReturn(userProjects);
-        Mockito.when(taskService.findByProject(projectOne)).thenReturn(List.of(task1, task2));
-        Mockito.when(taskService.findByProject(projectTwo)).thenReturn(List.of(task3, task4));
+        Mockito.when(taskService.loadWithStructure(projectOne)).thenReturn(List.of(task1, task2));
+        Mockito.when(taskService.loadWithStructure(projectTwo)).thenReturn(List.of(task3, task4));
 
         List<Task> result = dashboardService.todayTasks(user);
         Assert.assertThat(result.size(), Is.is(2));
@@ -211,8 +207,8 @@ public class DashboardServiceImplTest {
         Task task4 = new Task(4L).createAndExpiredDates(LocalDateTime.now(), LocalDate.now().plusDays(10));
 
         Mockito.when(projectService.userProjects(user)).thenReturn(userProjects);
-        Mockito.when(taskService.findByProject(projectOne)).thenReturn(List.of(task1, task2));
-        Mockito.when(taskService.findByProject(projectTwo)).thenReturn(List.of(task3, task4));
+        Mockito.when(taskService.loadWithStructure(projectOne)).thenReturn(List.of(task1, task2));
+        Mockito.when(taskService.loadWithStructure(projectTwo)).thenReturn(List.of(task3, task4));
 
         List<Task> result = dashboardService.thisWeekTasks(user);
         Assert.assertThat(result.size(), Is.is(3));
@@ -234,8 +230,8 @@ public class DashboardServiceImplTest {
         Task task4 = new Task(4L).createAndExpiredDates(LocalDateTime.now(), LocalDate.now().minusMonths(1));
 
         Mockito.when(projectService.userProjects(user)).thenReturn(userProjects);
-        Mockito.when(taskService.findByProject(projectOne)).thenReturn(List.of(task1, task2));
-        Mockito.when(taskService.findByProject(projectTwo)).thenReturn(List.of(task3, task4));
+        Mockito.when(taskService.loadWithStructure(projectOne)).thenReturn(List.of(task1, task2));
+        Mockito.when(taskService.loadWithStructure(projectTwo)).thenReturn(List.of(task3, task4));
 
         List<Task> result = dashboardService.outDatedTasks(user);
         Assert.assertThat(result.size(), Is.is(2));

@@ -16,4 +16,5 @@ public interface TaskService extends BasicCRUD<Task> {
     int deleteByGroup(Group group);
 
     List<Task> findByProject(Project project);
+    List<Task> loadWithStructure(Project project);
 }
