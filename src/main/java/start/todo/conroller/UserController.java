@@ -1,11 +1,13 @@
 package start.todo.conroller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import start.todo.exception.ResourceNotFoundException;
 import start.todo.model.domain.User;
 import start.todo.model.dto.UserDTO;
+import start.todo.model.view.ModelView;
 import start.todo.service.UserService;
 
 @RestController
@@ -17,6 +19,12 @@ public class UserController {
 
     @Autowired
     private ModelMapper mapper;
+
+    @GetMapping("/{userId}")
+    @JsonView(ModelView.BasicFields.class)
+    public User getUser(@PathVariable("userId") Long userId) {
+        return userService.findById(userId);
+    }
 
     @PutMapping("/{userId}")
     public void updateUser(@PathVariable("userId") Long userId, @RequestBody UserDTO userDTO) {
