@@ -18,4 +18,5 @@ public interface TaskService extends BasicCRUD<Task> {
 
     List<Task> findByProject(Project project);
     List<Task> loadWithStructure(Project project);
+    List<Task> loadByResponsible(User user);
 }

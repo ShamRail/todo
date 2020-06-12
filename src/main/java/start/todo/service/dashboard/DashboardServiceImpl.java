@@ -130,4 +130,9 @@ public class DashboardServiceImpl implements DashboardService {
                 .filter(condition)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Task> loadByResponsible(User responsible) {
+        return taskService.loadByResponsible(responsible);
+    }
 }

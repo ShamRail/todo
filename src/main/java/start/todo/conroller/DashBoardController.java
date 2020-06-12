@@ -69,4 +69,10 @@ public class DashBoardController {
         return dashboardService.allTasks(User.idStub(userId));
     }
 
+    @GetMapping("/project/my")
+    @JsonView(ModelView.FieldsPathResponsible.class)
+    public List<Task> tasksByResponsible(@PathVariable("userId") Long userId) {
+        return dashboardService.loadByResponsible(User.idStub(userId));
+    }
+
 }
