@@ -24,6 +24,9 @@ public class TaskController {
     private ModelMapper mapper;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private ProjectService projectService;
 
     @Autowired
@@ -40,8 +43,9 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @JsonView(ModelView.BasicFields.class)
+    @JsonView(ModelView.FieldsResponsible.class)
     public Task createTask(
+            @PathVariable("userId") Long userId,
             @PathVariable("projectId") Long projectId,
             @PathVariable("categoryId") Long categoryId,
             @PathVariable("groupId") Long groupId,
@@ -52,6 +56,7 @@ public class TaskController {
                 Project.idStub(projectId), Category.idStub(categoryId), Group.idStub(groupId)
         );
         task.setContent(new TaskContent(taskDTO.getContent()));
+        task.setResponsible(userService.findById(userId));
         return taskService.save(task);
     }
 
@@ -105,6 +110,18 @@ public class TaskController {
             throw new InvalidArgsException("Invalid status. Must be COMPLETED or IN_PROGRESS");
         }
         if (!taskService.markAs(Task.idStub(taskId), sts)) {
+            throw new ResourceNotFoundException("Invalid id!");
+        }
+    }
+
+    @PutMapping("/{taskId}/responsible")
+    public void updateResponsible(
+            @PathVariable("taskId") Long taskId,
+            @RequestParam Long userId) {
+        if (userId == null) {
+            throw new InvalidArgsException("Invalid status. Must be COMPLETED or IN_PROGRESS");
+        }
+        if (!taskService.updateResponsible(Task.idStub(taskId), User.idStub(userId))) {
             throw new ResourceNotFoundException("Invalid id!");
         }
     }

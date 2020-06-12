@@ -44,20 +44,24 @@ public class Task {
     private TaskContent content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonView(value = {ModelView.FieldsGroup.class, ModelView.FieldsPath.class})
+    @JsonView(value = {ModelView.FieldsGroup.class, ModelView.FieldsPathResponsible.class})
     private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonView(ModelView.FieldsPath.class)
+    @JsonView(ModelView.FieldsPathResponsible.class)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonView(ModelView.FieldsPath.class)
+    @JsonView(ModelView.FieldsPathResponsible.class)
     private Project project;
 
     @OneToMany(mappedBy = "task")
     @JsonView(ModelView.FieldsGroupContentComments.class)
     private List<Comment> comments = new LinkedList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonView(ModelView.FieldsResponsible.class)
+    private User responsible;
 
     public Task() {}
 
@@ -189,6 +193,14 @@ public class Task {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public User getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
     }
 
     @Override

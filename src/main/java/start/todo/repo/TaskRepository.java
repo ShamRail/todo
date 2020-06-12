@@ -24,6 +24,11 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     int updateStatus(@Param("id") Long id, @Param("sts") TaskStatus sts);
 
     @Modifying(clearAutomatically = true)
+    @Query("update Task t set t.responsible = :rsb where t.id = :id")
+    @Transactional
+    int updateResponsible(@Param("id") Long id, @Param("rsb") User rsb);
+
+    @Modifying(clearAutomatically = true)
     @Query("delete from Task t where t.id = :id")
     @Transactional
     int delete(@Param("id") Long id);
@@ -43,7 +48,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Transactional
     int deleteByGroup(@Param("gr") Group gr);
 
-    @Query("select t from Task t join fetch t.content where t.id = :id")
+    @Query("select t from Task t join fetch t.content " +
+            "join fetch t.responsible r " +
+            "where t.id = :id")
     Task taskWithContent(@Param("id") Long id);
 
     List<Task> findByProject(Project project);
@@ -55,7 +62,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("select t from Task t " +
             "join fetch t.project p " +
             "join fetch t.category c " +
-            "join fetch t.group where t.project = :prj")
+            "join fetch t.group " +
+            "join fetch t.responsible " +
+            "where t.project = :prj")
     @Transactional
     List<Task> loadWithStructure(@Param("prj") Project prj);
 

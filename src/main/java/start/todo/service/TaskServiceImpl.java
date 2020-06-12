@@ -42,6 +42,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public boolean updateResponsible(Task task, User newResponsible) {
+        return taskDB.updateResponsible(task.getId(), newResponsible) > 0;
+    }
+
+    @Override
     public int deleteByProject(Project project) {
         return taskDB.deleteByProject(project);
     }

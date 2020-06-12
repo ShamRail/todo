@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import start.todo.model.domain.*;
-import start.todo.service.TaskService;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +16,8 @@ import java.util.Optional;
 @DataJpaTest
 public class TaskRepositoryTest {
 
+    @Autowired
+    private UserRepository userDB;
 
     @Autowired
     private TaskRepository taskDB;
@@ -184,7 +185,21 @@ public class TaskRepositoryTest {
         Assert.assertEquals(tasks.get(0).getGroup().getTitle(), group.getTitle());
         Assert.assertEquals(tasks.get(0).getTitle(), task.getTitle());
 
+    }
 
+    @Test
+    public void whenUpdateResponsible() {
+        User creator = new User();
+        userDB.save(creator);
+        Task task = new Task();
+        task.setResponsible(creator);
+        taskDB.save(task);
+        User another = new User();
+        userDB.save(another);
+        taskDB.updateResponsible(task.getId(), another);
+
+        Task out = taskDB.findById(task.getId()).orElse(null);
+        Assert.assertEquals(out.getResponsible().getId(), another.getId());
     }
 
 }

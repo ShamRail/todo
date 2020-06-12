@@ -10,6 +10,7 @@ public interface TaskService extends BasicCRUD<Task> {
     boolean markAs(Task task, TaskStatus status);
     Task loadWithContent(Long id);
     boolean updateContent(Task task, TaskContent content);
+    boolean updateResponsible(Task task, User newResponsible);
 
     int deleteByProject(Project project);
     int deleteByCategory(Category category);
