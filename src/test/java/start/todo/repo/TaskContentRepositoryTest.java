@@ -9,12 +9,16 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import start.todo.model.domain.Task;
 import start.todo.model.domain.TaskContent;
+import start.todo.model.domain.User;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class TaskContentRepositoryTest {
+
+    @Autowired
+    private UserRepository userDB;
 
     @Autowired
     private TaskRepository taskDB;
@@ -24,9 +28,12 @@ public class TaskContentRepositoryTest {
 
     @Test
     public void whenUpdateContent() {
+        User user = new User();
         Task task = new Task();
         TaskContent taskContent = new TaskContent("content");
         task.setContent(taskContent);
+        task.setResponsible(user);
+        userDB.save(user);
         taskDB.save(task);
 
         //Long contentID = taskDB.findById(task.getId()).get().getId();

@@ -62,8 +62,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("select t from Task t " +
             "join fetch t.project p " +
             "join fetch t.category c " +
-            "join fetch t.group " +
-            "join fetch t.responsible " +
+            "join fetch t.group g " +
+            "join fetch t.responsible r " +
             "where t.project = :prj")
     @Transactional
     List<Task> loadWithStructure(@Param("prj") Project prj);

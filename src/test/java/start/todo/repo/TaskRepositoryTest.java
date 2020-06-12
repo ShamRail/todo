@@ -139,9 +139,12 @@ public class TaskRepositoryTest {
 
     @Test
     public void whenSaveLoadWithContent() {
+        User user = new User();
         Task task = new Task().content(
                 new TaskContent("content")
         );
+        task.setResponsible(user);
+        userDB.save(user);
         taskDB.save(task);
         Assert.assertThat(
                 taskDB.taskWithContent(task.getId()).getContent().getText(),
@@ -167,13 +170,16 @@ public class TaskRepositoryTest {
 
     @Test
     public void whenLoadWithStructure() {
+        User user = new User();
         Project project = new Project("pt", "pd");
         Category category = new Category("ct", "cd", project);
         Group group = new Group("gt", "gd", category, project);
         Task task = new Task()
                 .titleAndDescriptionAndStatus("tt", "td", TaskStatus.COMPLETED)
                 .path(project, category, group);
+        task.setResponsible(user);
 
+        userDB.save(user);
         projectDB.save(project);
         categoryDB.save(category);
         groupDB.save(group);
