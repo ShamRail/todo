@@ -13,7 +13,11 @@ import javax.transaction.Transactional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying(clearAutomatically = true)
-    @Query("update User u set u.username = :#{#user.username}, u.email = :#{#user.email}, u.password = :#{#user.username} where u.id = :#{#user.id}")
+    @Query("update User u set " +
+            "u.username = :#{#user.username}, " +
+            "u.email = :#{#user.email}, " +
+            "u.password = :#{#user.username} " +
+            "where u.id = :#{#user.id}")
     @Transactional
     int update(@Param("user") User user);
 
